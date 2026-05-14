@@ -5,6 +5,5 @@ metadata:
 spec:
   containers:
     - name: orchestrator
-      image: ai-orchestrator:latest
-      ports:
-        - containerPort: 8000
+      image: alpine:latest
+      command: ["sh", "-c", "echo orchestrator running && sleep 3600"]
