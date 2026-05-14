@@ -25,7 +25,6 @@ for app in "${APPS[@]}"; do
 
   kubectl delete deployment "$app" --ignore-not-found=true
   kubectl delete service "$app" --ignore-not-found=true
-
   kubectl delete pods -l app="$app" --ignore-not-found=true
 done
 
@@ -47,7 +46,7 @@ kubectl get pods -A -o json \
 done
 
 # =========================================================
-# 3. REMOVE FAILED / EVicted / COMPLETED JOB ARTIFACTS
+# 3. REMOVE FAILED / EVicted / COMPLETED PODS
 # =========================================================
 echo "🧽 Cleaning failed/completed pods..."
 
@@ -77,7 +76,18 @@ kubectl get rs -A -o json \
 done
 
 # =========================================================
-# 5. APPLY CLEAN INFRASTRUCTURE (REDEPLOY CORE)
+# 5. BUILD LOCAL IMAGE (ORCHESTRATOR)
+# =========================================================
+echo "🐳 Building local orchestrator image..."
+
+if [ -f Dockerfile ]; then
+  sudo docker build -t ai-orchestrator:latest .
+else
+  echo "⚠️ No Dockerfile found - skipping build"
+fi
+
+# =========================================================
+# 6. APPLY CLEAN INFRASTRUCTURE (REDEPLOY CORE)
 # =========================================================
 echo "📦 Reapplying infrastructure manifests..."
 
@@ -97,10 +107,9 @@ for file in "${MANIFESTS[@]}"; do
 done
 
 # =========================================================
-# 6. FINAL HEALTH CHECK
+# 7. FINAL HEALTH CHECK
 # =========================================================
 echo "📊 Final cluster state:"
-
 kubectl get pods -A -o wide
 
 echo ""
