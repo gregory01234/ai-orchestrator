@@ -1,0 +1,14 @@
+{
+  "agents": [
+    {
+      "name": "invoice-agent",
+      "status": "desired",
+      "type": "factory-generated"
+    },
+    {
+      "name": "base-agent",
+      "status": "system",
+      "type": "core"
+    }
+  ]
+}
