@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: base-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: base-agent
+  template:
+    metadata:
+      labels:
+        app: base-agent
+    spec:
+      containers:
+        - name: base-agent
+          image: alpine:latest
+          command: ["sh", "-c", "echo base-agent running && sleep 3600"]
