@@ -1,11 +1,20 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: orchestrator
   labels:
     app: orchestrator
 spec:
-  containers:
-    - name: orchestrator
-      image: alpine:latest
-      command: ["sh", "-c", "echo orchestrator running && sleep 3600"]
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orchestrator
+  template:
+    metadata:
+      labels:
+        app: orchestrator
+    spec:
+      containers:
+        - name: orchestrator
+          image: alpine:latest
+          command: ["sh", "-c", "echo orchestrator running && sleep 3600"]
